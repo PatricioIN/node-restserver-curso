@@ -1,6 +1,7 @@
 require('./config/config');
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 // parse application/x-www-form-urlencoded
@@ -9,41 +10,19 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.get('/usuario', function(req, res) {
-    res.json('get Usuario')
+app.use(require('./routes/usuario'));
+
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: true }, (err, res) => {
+    useNewUrlParser: true
+    if (err) throw err;
+
+    console.log('Base de datos ONLINE');
 });
 
-app.post('/usuario', function(req, res) {
+/*const Cat = mongoose.model('Dog', { name: String });
 
-    let body = req.body;
-
-    if (body.nombre === undefined) {
-        //res.status(400).json();
-        res.status(400).json({
-            ok: false,
-            mensaje: "El nombre es necesario"
-        });
-    } else {
-        res.json({
-            persona: body
-        })
-    }
-
-
-});
-
-app.put('/usuario/:id', function(req, res) {
-
-    let idUsuario = req.params.id;
-
-    res.json({
-        idUsuario
-    });
-});
-
-app.delete('/usuario', function(req, res) {
-    res.json('delete Usuario')
-});
+const kitty = new Cat({ name: 'Mikado2' });
+kitty.save().then(() => console.log('meow'));*/
 
 app.listen(process.env.PORT, () => {
     console.log('Escuchando puerto: ', process.env.PORT);
