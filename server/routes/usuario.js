@@ -55,7 +55,7 @@ app.post('/usuario', [verificaToken, verificaAdmin_Role], function(req, res) {
 
     usuario.save((err, usuarioDB) => {
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 err
             });
@@ -63,26 +63,11 @@ app.post('/usuario', [verificaToken, verificaAdmin_Role], function(req, res) {
 
         //usuarioDB.password = null;
 
-        res.json({
+        res.status(201).json({
             ok: true,
             usuario: usuarioDB
         });
     })
-
-
-    /*if (body.nombre === undefined) {
-        //res.status(400).json();
-        res.status(400).json({
-            ok: false,
-            mensaje: "El nombre es necesario"
-        });
-    } else {
-        res.json({
-            persona: body
-        })
-    }*/
-
-
 });
 
 app.put('/usuario/:id', verificaToken, (req, res) => {
